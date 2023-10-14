@@ -37,3 +37,9 @@ This section organizes the algorithms provided in the book. This is done to mimi
 when deciding how to structure the code files. For example, gradient bandit algorithm is provided under tabular solution
 so the code that implements gradient bandit method will be given under 
 `/nebulous_reward/botforge/tabular/gradient_bandit.py` and so on.
+
+### Dumb Methods
+The first addition to this repository is a dumb bot that simply selects an action based on the average reward associated
+with that action. `/nebulous_reward/botforge/dumb/average_joe.py`. It simply selects the action based on epsilon greedy over
+action value function based on average reward for taking an action, regardless of everything else.
+
