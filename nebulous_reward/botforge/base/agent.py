@@ -6,5 +6,5 @@ class Agent:
     def get_action(self, state):
         pass
 
-    def learn(self, reward):
+    def learn(self, reward, action):
         pass

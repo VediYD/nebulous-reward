@@ -8,5 +8,5 @@ class Policy:
     def select_action(self, state):
         pass
 
-    def update_policy(self):
+    def update_policy(self, reward, action):
         pass

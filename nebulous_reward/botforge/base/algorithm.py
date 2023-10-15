@@ -3,7 +3,7 @@ class Algorithm:
         self.agent = agent
         self.env = env
 
-    def train(self):
+    def apply(self, epochs, steps):
         # learning method that needs to use the agent and env objects to run the training
         pass
 
