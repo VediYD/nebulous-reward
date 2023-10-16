@@ -13,7 +13,7 @@ if __name__ == '__main__':
     # initialize policy, agent, and environment
     policy = AJPolicy(2, 0.5)
     agent = AJAgent(policy, None)
-    env = gym.make('Blackjack-v1', natural=False, sab=False)
+    env = gym.make('Blackjack-v1', natural=False, sab=False, render_mode='human')
 
     # setup and train algorithm
     algorithm = AverageJoe(agent, env)
@@ -21,3 +21,4 @@ if __name__ == '__main__':
 
     print(policy.parameters)
     print(policy.average_reward)
+    print(algorithm.render_history)

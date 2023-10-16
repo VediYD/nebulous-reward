@@ -50,6 +50,13 @@ class AverageJoe(Algorithm):
         super().__init__(agent, env)
 
     def apply(self, epochs, steps):
+        render_mode = self.env.render_mode
+        _ = self.env.reset()
+        if render_mode is not None:
+            _render = self.env.render()
+            if render_mode != 'human':
+                self._update_render_history(0, 0, _render)
+
         for epoch in range(epochs):
             observation, info = self.env.reset()
 
@@ -58,6 +65,9 @@ class AverageJoe(Algorithm):
                 observation, reward, terminated, truncated, info = self.env.step(action)
 
                 self.agent.learn(reward, action)
+
+                if (render_mode is not None) and (render_mode != 'human'):
+                    self._update_render_history(epoch, step, self.env.render())
 
                 if terminated or truncated:
                     break
