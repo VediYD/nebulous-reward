@@ -1,6 +1,7 @@
 from nebulous_reward.botforge.base import Agent
 from nebulous_reward.botforge.base import Policy
 from nebulous_reward.botforge.base import Algorithm
+from nebulous_reward.util import StatusWindow
 from random import random, choice
 
 
@@ -11,7 +12,6 @@ class AJPolicy(Policy):
                 range(n_actions), [[]] * n_actions  # initially the average reward for each action is 0
             ))
         )
-
         self.choices = range(n_actions)
         self.epsilon = epsilon
         self.average_reward = dict(zip(self.choices, [0.0] * n_actions))
@@ -48,6 +48,7 @@ class AJAgent(Agent):
 class AverageJoe(Algorithm):
     def __init__(self, agent, env):
         super().__init__(agent, env)
+        self.status_window = StatusWindow()
 
     def apply(self, epochs, steps):
         render_mode = self.env.render_mode
@@ -56,6 +57,9 @@ class AverageJoe(Algorithm):
             _render = self.env.render()
             if render_mode != 'human':
                 self._update_render_history(0, 0, _render)
+            else:
+                self.status_window.initialize()
+                self.status_window.update(0, 0, 'NA', 'NA')
 
         for epoch in range(epochs):
             observation, info = self.env.reset()
@@ -66,8 +70,15 @@ class AverageJoe(Algorithm):
 
                 self.agent.learn(reward, action)
 
-                if (render_mode is not None) and (render_mode != 'human'):
-                    self._update_render_history(epoch, step, self.env.render())
+                if render_mode is not None:
+                    if render_mode != 'human':
+                        self._update_render_history(epoch, step, self.env.render())
+                    else:
+                        self.status_window.update(epoch, step, action, reward)
 
                 if terminated or truncated:
                     break
+
+        if render_mode == 'human':
+            self.status_window.close()
+        return None
